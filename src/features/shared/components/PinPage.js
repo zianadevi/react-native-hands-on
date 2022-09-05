@@ -93,7 +93,7 @@ const PinPage = () => {
                     </Text>
                     <View style={styles.pinContainer}>
                         {pin.map((p) => {
-                            let style = p != '' ? styles.pinInput2 : styles.pinInput1;
+                            let style = p !== '' ? styles.pinInput2 : styles.pinInput1;
                             return <View style={style}></View>
                         })}
                     </View>
