@@ -6,8 +6,11 @@ import TitleLabel from "../shared/components/TitleLabel";
 import FormInput from "../shared/components/FormInput";
 import FormPassword from "../shared/components/FormPassword";
 import FormButton from "../shared/components/FormButton";
+import { useNavigation } from "@react-navigation/native";
+import { ROUTE } from "../shared/constants";
 
 const LoginPage = () => {
+    const navigation = useNavigation();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     return(
@@ -20,7 +23,8 @@ const LoginPage = () => {
                     <FormInput placeholder="Enter your email" onChangeValue={setUsername} value={username}/>
                     <FormPassword placeholder="Enter your password" onChangeValue={setPassword} value={password}/>
                     <FormButton label='Login' onClick={()=>{
-                        keyboard.dismiss
+                        navigation.replace(ROUTE.MAIN)
+                        // keyboard.dismiss
                     }}/>
                 </View>
             </AppBackground>
