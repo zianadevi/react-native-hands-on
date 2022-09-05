@@ -3,5 +3,6 @@ export const ROUTE = {
     WELCOME : 'Welcome',
     PRODUCT : 'Product',
     HOMEPAGE : 'Homepage',
-    MAIN: 'Main'
+    MAIN: 'Main',
+    PIN : 'Pin'
 }

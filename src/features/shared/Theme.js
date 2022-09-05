@@ -10,6 +10,7 @@ export const theme ={
     background : require('../../../assets/img/background.jpg'),
     colors : {
         primary : pallete.white,
+        orange : pallete.orange,
         black : pallete.black,
         secondary: pallete.lightGrey,
         foreground: pallete.grey,

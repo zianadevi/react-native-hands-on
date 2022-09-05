@@ -6,9 +6,9 @@ import {FontAwesome} from '@expo/vector-icons';
 import { useTheme } from "../../shared/context/ThemeContext";
 import PromoView from "./components/PromoView";
 import MenuView from "./components/MenuView";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import {ROUTE} from '../../shared/constants';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalDialog from "../../shared/components/ModalDialog";
 
 const MainPage = () => {
@@ -16,6 +16,12 @@ const MainPage = () => {
     const styles = styling(theme);
     const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false)
+    const route = useRoute();
+    useEffect(() => {
+        if (route.params?.message) {
+            console.log(route.params.message);
+        }
+    }, [route.params])
 
     return (
         <MainContainer>
@@ -39,7 +45,11 @@ const MainPage = () => {
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.menuContainer}>
-                                <TouchableOpacity style={styles.touchAble}>
+                                <TouchableOpacity style={styles.touchAble} onPress={() => {
+                                    navigation.navigate(ROUTE.PIN, {
+                                        prevPage: ROUTE.HOMEPAGE
+                                    })
+                                }}>
                                     <FontAwesome name="money" size={24} color={theme.colors.primary}/>
                                     <Text style={styles.textMenu}>Bill{'\n'}Payment</Text>
                                 </TouchableOpacity>

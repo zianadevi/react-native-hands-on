@@ -17,14 +17,14 @@ const styling = (theme) => (
     StyleSheet.create({
         button:{
             alignItems: 'center',
-            backgroundColor: theme.colors.primary,
+            backgroundColor: theme.colors.orange,
             padding : theme.spacing.s,
             borderRadius: theme.radius.m,
             alignSelf : 'stretch',
             margin: theme.spacing.m
         },
         textButton : {
-            color : theme.colors.black,
+            color : theme.colors.primary,
             fontFamily : 'Poppins-Bold'
         }
     })
