@@ -1,9 +1,9 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { useTheme } from "../context/ThemeContext"
-import MainContainer from "./MainContainer";
-import FormButton from "./FormButton";
+import { useTheme } from "../shared/context/ThemeContext"
+import MainContainer from "../shared/components/MainContainer";
+import FormButton from "../shared/components/FormButton";
 
 const PinPage = () => {
     const theme = useTheme();

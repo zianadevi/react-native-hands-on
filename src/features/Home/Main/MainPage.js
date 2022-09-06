@@ -19,7 +19,7 @@ const MainPage = () => {
     const route = useRoute();
     useEffect(() => {
         if (route.params?.message) {
-            console.log(route.params.message);
+            console.log(route.name, route.params?.message);
         }
     }, [route.params])
 
@@ -39,7 +39,9 @@ const MainPage = () => {
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.menuContainer}>
-                                <TouchableOpacity style={styles.touchAble}>
+                                <TouchableOpacity style={styles.touchAble} onPress={() => {
+                                    // navigation.navigate('Menu1');
+                                }}>
                                     <FontAwesome name="user-plus" size={24} color={theme.colors.primary}/>
                                     <Text style={styles.textMenu}>Customer{'\n'}Registration</Text>
                                 </TouchableOpacity>
@@ -47,6 +49,8 @@ const MainPage = () => {
                             <View style={styles.menuContainer}>
                                 <TouchableOpacity style={styles.touchAble} onPress={() => {
                                     navigation.navigate(ROUTE.PIN, {
+                                        // userId : 123,
+                                        // prevPage : route.name,
                                         prevPage: ROUTE.HOMEPAGE
                                     })
                                 }}>
