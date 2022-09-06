@@ -14,5 +14,6 @@ export const SERVICE = {
 }
 
 export const KEY = {
-    TOKEN: 'token'
+    TOKEN: 'token',
+    USERNAME: 'userName',
 }

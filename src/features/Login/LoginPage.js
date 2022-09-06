@@ -1,5 +1,5 @@
-import { useState } from "react"
-import {Keyboard, StyleSheet, View } from "react-native"
+import { useState } from "react";
+import {Keyboard, StyleSheet, View } from "react-native";
 import MainContainer from "../shared/components/MainContainer";
 import AppBackground from "../shared/components/AppBackground";
 import TitleLabel from "../shared/components/TitleLabel";
@@ -7,12 +7,13 @@ import FormInput from "../shared/components/FormInput";
 import FormPassword from "../shared/components/FormPassword";
 import FormButton from "../shared/components/FormButton";
 import { useNavigation } from "@react-navigation/native";
-import { ROUTE } from "../shared/constants";
+import { KEY, ROUTE } from "../shared/constants";
 import useViewState from "../shared/hook/UseViewState";
 import { useDependency } from "../shared/hook/UseDependency";
 import Spinner from "../shared/components/Spinner";
 import Snackbar from "../shared/components/Snackbar";
 import { useAuth } from "../shared/hook/UseAuth";
+import { Storage } from "../shared/Storage";
 
 
 const LoginPage = () => {
@@ -21,6 +22,7 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const {viewState, setLoading, setError} = useViewState();
     const {loginService} = useDependency();
+    const storage = Storage();
     const {onLogin} = useAuth();
 
     const onAuthenticate = async () => {
@@ -29,6 +31,8 @@ const LoginPage = () => {
         try {
             const response = await onLogin({userName : userName, password : password});
             if (response) {
+                // simpan userName ke storage
+                await storage.storeData(KEY.USERNAME, userName);
                 navigation.replace(ROUTE.MAIN);
             } else {
                 setError(new Error('Unauthorized'))

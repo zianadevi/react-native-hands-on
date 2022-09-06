@@ -7,10 +7,12 @@ import { useTheme } from "../../shared/context/ThemeContext";
 import PromoView from "./components/PromoView";
 import MenuView from "./components/MenuView";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import {ROUTE} from '../../shared/constants';
+import {KEY, ROUTE} from '../../shared/constants';
 import { useEffect, useState } from "react";
 import ModalDialog from "../../shared/components/ModalDialog";
 import { useAuth } from "../../shared/hook/UseAuth";
+import { useDependency } from "../../shared/hook/UseDependency";
+import { Storage } from "../../shared/Storage";
 
 const MainPage = () => {
     const theme = useTheme();
@@ -19,6 +21,34 @@ const MainPage = () => {
     const [modalVisible, setModalVisible] = useState(false)
     const route = useRoute();
     const {onLogout} = useAuth();
+    const {userInfoService} = useDependency();
+    const storage = Storage();
+    const [fullName, setFullName] = useState('');
+
+    // ini dapat dari user-info, jadi nama yang muncul random bukan userName
+    // const hadleGetFullName = async () => {
+    //     try {
+    //         const response = await userInfoService.userInfo();
+    //         setFullName(response.fullName)
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
+
+    // userName disimpan di storage saat login, disini buat dapetin username dari storage
+    const handleGetUserName = async () => {
+        try {
+            const resp = await storage.getData(KEY.USERNAME)
+            setFullName(resp)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    useEffect(() => {
+        // hadleGetFullName();
+        handleGetUserName();
+    }, []);
 
     useEffect(() => {
         if (route.params?.message) {
@@ -86,7 +116,7 @@ const MainPage = () => {
                             <HeaderPageLabel text='Profile' />
                             <View style={{marginHorizontal: theme.spacing.m}}>
                                 <TouchableOpacity onPress={handleLogout}>
-                                    <Text style={styles.textMenu}>Logout</Text>
+                                    <Text style={styles.textLogout}>Logout {fullName}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -114,6 +144,11 @@ const styling = (theme) => StyleSheet.create({
         fontSize: 12,
         color: theme.colors.primary,
         fontFamily: 'Poppins-Regular'
+    },
+    textLogout: {
+        fontSize: 14,
+        color: theme.colors.primary,
+        fontFamily: 'Poppins-Bold'
     },
     touchAble: {
         alignItems: 'center'
