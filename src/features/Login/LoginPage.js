@@ -1,5 +1,5 @@
 import { useState } from "react"
-import {StyleSheet, View } from "react-native"
+import {Keyboard, StyleSheet, View } from "react-native"
 import MainContainer from "../shared/components/MainContainer";
 import AppBackground from "../shared/components/AppBackground";
 import TitleLabel from "../shared/components/TitleLabel";
@@ -8,26 +8,48 @@ import FormPassword from "../shared/components/FormPassword";
 import FormButton from "../shared/components/FormButton";
 import { useNavigation } from "@react-navigation/native";
 import { ROUTE } from "../shared/constants";
+import useViewState from "../shared/hook/UseViewState";
+import { useDependency } from "../shared/hook/UseDependency";
+import Spinner from "../shared/components/Spinner";
+import Snackbar from "../shared/components/Snackbar";
+
 
 const LoginPage = () => {
     const navigation = useNavigation();
-    const [username, setUsername] = useState('');
+    const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
+    const {viewState, setLoading, setError} = useViewState();
+    const {loginService} = useDependency();
+
+    const onAuthenticate = async () => {
+        Keyboard.dismiss();
+        setLoading();
+        try {
+            const response = await loginService.authenticate({userName : userName, password : password});
+            if (response) {
+                navigation.replace(ROUTE.MAIN);
+            } else {
+                setError(new Error('Unauthorized'))
+            }
+        } catch (e) {
+            setError(e)
+        }
+    }
+
     return(
         <MainContainer>
+            {viewState.isLoading && <Spinner/>}
             <AppBackground>
                 <View style={styles.header} >
                     <TitleLabel text='Welcome!'/>
                 </View>
                 <View style={styles.form}>
-                    <FormInput placeholder="Enter your email" onChangeValue={setUsername} value={username}/>
+                    <FormInput placeholder="Enter your email" onChangeValue={setUserName} value={userName}/>
                     <FormPassword placeholder="Enter your password" onChangeValue={setPassword} value={password}/>
-                    <FormButton label='Login' onClick={()=>{
-                        navigation.replace(ROUTE.MAIN)
-                        // keyboard.dismiss
-                    }}/>
+                    <FormButton label='Login' onClick={onAuthenticate}/>
                 </View>
             </AppBackground>
+            {viewState.error !== null && <Snackbar message='Unauthorized'/>}
         </MainContainer>
     )
 }

@@ -5,10 +5,13 @@ import { ThemeProvider } from './src/features/shared/context/ThemeContext';
 import useAppFont from './src/features/shared/hook/UseAppFont';
 import { NavigationContainer } from '@react-navigation/native';
 import AppRouter from './src/navigation/AppRouter';
+import { apiClientFactory } from './src/features/shared/ApiClientFactory';
+import { clientInstance } from './src/features/shared/AxiosClient';
 
 export default function App() {
   const fonts = useAppFont();
-  const services = serviceFactory();
+  const apiClient = apiClientFactory(clientInstance)
+  const services = serviceFactory(apiClient);
   if (!fonts) {
     return null;
   }
