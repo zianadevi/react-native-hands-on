@@ -10,6 +10,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import {ROUTE} from '../../shared/constants';
 import { useEffect, useState } from "react";
 import ModalDialog from "../../shared/components/ModalDialog";
+import { useAuth } from "../../shared/hook/UseAuth";
 
 const MainPage = () => {
     const theme = useTheme();
@@ -17,11 +18,24 @@ const MainPage = () => {
     const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false)
     const route = useRoute();
+    const {onLogout} = useAuth();
+
     useEffect(() => {
         if (route.params?.message) {
             console.log(route.name, route.params?.message);
         }
     }, [route.params])
+
+    const handleLogout = async () => {
+        try {
+            const resp = await onLogout();
+            if (resp) {
+                navigation.replace(ROUTE.LOGIN)
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     return (
         <MainContainer>
@@ -71,9 +85,7 @@ const MainPage = () => {
                         <View>
                             <HeaderPageLabel text='Profile' />
                             <View style={{marginHorizontal: theme.spacing.m}}>
-                                <TouchableOpacity onPress={() => {
-                                    navigation.replace(ROUTE.LOGIN)
-                                }}>
+                                <TouchableOpacity onPress={handleLogout}>
                                     <Text style={styles.textMenu}>Logout</Text>
                                 </TouchableOpacity>
                             </View>

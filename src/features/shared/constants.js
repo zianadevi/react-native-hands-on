@@ -9,5 +9,10 @@ export const ROUTE = {
 
 export const SERVICE = {
     LOGIN : '/login',
-    PRODUCT: '/product'
+    PRODUCT: '/product',
+    USER_INFO: '/user-info',
+}
+
+export const KEY = {
+    TOKEN: 'token'
 }

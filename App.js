@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import AppRouter from './src/navigation/AppRouter';
 import { apiClientFactory } from './src/features/shared/ApiClientFactory';
 import { clientInstance } from './src/features/shared/AxiosClient';
+import { AuthProvider } from './src/features/shared/context/AuthContext';
 
 export default function App() {
   const fonts = useAppFont();
@@ -21,7 +22,9 @@ export default function App() {
       <SafeAreaProvider>
         <ThemeProvider>
           <NavigationContainer>
-            <AppRouter/>
+            <AuthProvider>
+              <AppRouter/>
+            </AuthProvider>
           </NavigationContainer>
         </ThemeProvider>
       </SafeAreaProvider>
