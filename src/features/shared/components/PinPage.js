@@ -68,21 +68,21 @@ const PinPage = () => {
         }
     }, [route.params])
 
-    useEffect(() => {
-        if (!pin.includes('')) {
-            handleSubmitPassCode();
-        }
-    }, [pin]);
+    // useEffect(() => {
+    //     if (!pin.includes('')) {
+    //         handleSubmitPassCode();
+    //     }
+    // }, [pin]);
 
-    const handleSubmitPassCode = () => {
-        const passCodeStringVal = pin.join('')
-        handleClearPassCode();
-        alert(passCodeStringVal)
-    }
+    // const handleSubmitPassCode = () => {
+    //     const passCodeStringVal = pin.join('')
+    //     handleClearPassCode();
+    //     alert(passCodeStringVal)
+    // }
 
-    const handleClearPassCode = () => {
-        setPin(['', '', '', ''])
-    }
+    // const handleClearPassCode = () => {
+    //     setPin(['', '', '', ''])
+    // }
 
     return (
         <MainContainer>
