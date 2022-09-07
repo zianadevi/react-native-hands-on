@@ -11,8 +11,6 @@ import {KEY, ROUTE} from '../../shared/constants';
 import { useEffect, useState } from "react";
 import ModalDialog from "../../shared/components/ModalDialog";
 import { useAuth } from "../../shared/hook/UseAuth";
-import { useDependency } from "../../shared/hook/UseDependency";
-import { Storage } from "../../shared/Storage";
 
 const MainPage = () => {
     const theme = useTheme();
@@ -21,8 +19,8 @@ const MainPage = () => {
     const [modalVisible, setModalVisible] = useState(false)
     const route = useRoute();
     const {onLogout} = useAuth();
-    const {userInfoService} = useDependency();
-    const storage = Storage();
+    // const {userInfoService} = useDependency();
+    // const storage = Storage();
     const [fullName, setFullName] = useState('');
 
     // ini dapat dari user-info, jadi nama yang muncul random bukan userName
@@ -36,19 +34,19 @@ const MainPage = () => {
     // }
 
     // userName disimpan di storage saat login, disini buat dapetin username dari storage
-    const handleGetUserName = async () => {
-        try {
-            const resp = await storage.getData(KEY.USERNAME)
-            setFullName(resp)
-        } catch (e) {
-            console.log(e);
-        }
-    }
+    // const handleGetUserName = async () => {
+    //     try {
+    //         const resp = await storage.getData(KEY.USERNAME)
+    //         setFullName(resp)
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
 
-    useEffect(() => {
-        // hadleGetFullName();
-        handleGetUserName();
-    }, []);
+    // useEffect(() => {
+    //     // hadleGetFullName();
+    //     handleGetUserName();
+    // }, []);
 
     useEffect(() => {
         if (route.params?.message) {
@@ -68,10 +66,12 @@ const MainPage = () => {
     }
 
     return (
-        <MainContainer>
+        <MainContainer hint="Home">
             <AppBackground>
                 <HeaderPageLabel text="WMB" showBorder avatarImg="https://picsum.photos/200/300"/>
-                {modalVisible && <ModalDialog onPress={() => setModalVisible(false)} />}
+                {modalVisible && <ModalDialog visible={modalVisible} onPress={() => setModalVisible(false)} >
+                    <Text>Hi from modal</Text>    
+                </ModalDialog>}
                 <ScrollView>
                     <View style={{flex: 1, margin: theme.spacing.s}}>
                         <HeaderPageLabel text='POS'/>

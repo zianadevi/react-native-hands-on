@@ -1,46 +1,16 @@
-import { useState } from "react";
-import {Keyboard, StyleSheet, View } from "react-native";
+import {StyleSheet, View } from "react-native";
 import MainContainer from "../shared/components/MainContainer";
 import AppBackground from "../shared/components/AppBackground";
 import TitleLabel from "../shared/components/TitleLabel";
 import FormInput from "../shared/components/FormInput";
 import FormPassword from "../shared/components/FormPassword";
 import FormButton from "../shared/components/FormButton";
-import { useNavigation } from "@react-navigation/native";
-import { KEY, ROUTE } from "../shared/constants";
-import useViewState from "../shared/hook/UseViewState";
-import { useDependency } from "../shared/hook/UseDependency";
 import Spinner from "../shared/components/Spinner";
 import Snackbar from "../shared/components/Snackbar";
-import { useAuth } from "../shared/hook/UseAuth";
-import { Storage } from "../shared/Storage";
-
+import useLoginPage from "./UseLoginPage";
 
 const LoginPage = () => {
-    const navigation = useNavigation();
-    const [userName, setUserName] = useState('');
-    const [password, setPassword] = useState('');
-    const {viewState, setLoading, setError} = useViewState();
-    const {loginService} = useDependency();
-    const storage = Storage();
-    const {onLogin} = useAuth();
-
-    const onAuthenticate = async () => {
-        Keyboard.dismiss();
-        setLoading();
-        try {
-            const response = await onLogin({userName : userName, password : password});
-            if (response) {
-                // simpan userName ke storage
-                await storage.storeData(KEY.USERNAME, userName);
-                navigation.replace(ROUTE.MAIN);
-            } else {
-                setError(new Error('Unauthorized'))
-            }
-        } catch (e) {
-            setError(e)
-        }
-    }
+    const {viewState, userName, password, setUserName, setPassword, onAuthenticate} = useLoginPage()
 
     return(
         <MainContainer>
@@ -55,7 +25,7 @@ const LoginPage = () => {
                     <FormButton label='Login' onClick={onAuthenticate}/>
                 </View>
             </AppBackground>
-            {viewState.error !== null && <Snackbar message='Unauthorized'/>}
+            {viewState.error !== null && <Snackbar message={viewState.error.message}/>}
         </MainContainer>
     )
 }

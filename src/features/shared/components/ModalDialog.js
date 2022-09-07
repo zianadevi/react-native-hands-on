@@ -1,6 +1,16 @@
-import { Button, Modal, StyleSheet, Text, View } from "react-native";
+import { useEffect } from "react";
+import { Modal, Pressable, StyleSheet, View } from "react-native";
 
-const ModalDialog = ({visible, onPress}) => {
+const ModalDialog = ({visible = true, children, isAutoClose = false, onPress}) => {
+    useEffect(() => {
+        if (isAutoClose) {
+            const autoClose = setTimeout(onPress, 3000);
+            return() => {
+                clearTimeout(autoClose)
+            };
+        }
+    });
+    
     return (
         <View style={styles.mainContainer}>
             <Modal
@@ -8,12 +18,11 @@ const ModalDialog = ({visible, onPress}) => {
                 animationType='slide'
                 transparent={true}
             >
-                <View style={styles.mainContainer}>
+                <Pressable accessibilityHint="modal" style={styles.mainContainer} onPress={onPress}>
                     <View style={styles.modalContainer}>
-                        <Text>Ini Modal</Text>
-                        <Button onPress={onPress} title='Dismiss'/>
+                        {children}
                     </View>
-                </View>
+                </Pressable>
             </Modal>
         </View>
     )

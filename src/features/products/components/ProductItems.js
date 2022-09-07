@@ -27,7 +27,7 @@ const Item = ({productName, idx, onDelete, refRow, closeRow}) => {
                 ref={ref => refRow(idx, ref)} 
                 onSwipeableWillOpen={closeRow}
             >
-                <View style={styles.item}>
+                <View style={styles.item} accessibilityHint='product-items'>
                     <Text style={styles.itemText}> {productName} </Text>
                 </View>
             </Swipeable>

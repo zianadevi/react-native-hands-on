@@ -1,65 +1,17 @@
-import { useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
 import AppBackground from "../shared/components/AppBackground";
 import MainContainer from "../shared/components/MainContainer";
 import { useTheme } from "../shared/context/ThemeContext"
-import {useDependency} from '../shared/hook/UseDependency';
 import Item from "./components/ProductItems";
 import HeaderPageLabel from "../../features/shared/components/HeaderPageLabel";
+import useProductList from "./UseProductList";
 
 const ProductList = () => {
     const theme = useTheme();
-    const {productService} = useDependency();
-    const [products, setProducts] = useState([]);
-    const [isFetching, setFetching] = useState(false);
-    const [page, setPage] = useState(1);
-    const [isNext, setIsNext] = useState(true);
+    const {viewState, onRefresh, onFetchMore, onDeleteItem} = useProductList();
 
     let prevOpenedRow;
     const row = [];
-
-    const onGetAllProduct = async () => {
-        setFetching(true);
-        try {
-            const response = await productService.getAllProduct(page, 20);
-            if (page === 1) {
-                setProducts([
-                    ...response
-                ]);
-            } else {
-                setProducts(prevState => [
-                    ...prevState,
-                    ...response
-                ]);
-            }
-            setFetching(false);
-            setIsNext(true)
-        } catch (e) {
-            console.log(e);
-            setIsNext(false);
-            setFetching(false);
-        }
-    }
-
-    useEffect(() => {
-        onGetAllProduct();
-    }, [page]);
-
-    const onFetchMore = async () => {
-        if (isNext) {
-            setPage(prevState => prevState + 1)
-        } else {
-            onGetAllProduct()
-        }
-    }
-
-    const onRefresh = async () => {
-        setPage(1)
-    }
-
-    const onDeleteItem = (index) => {
-        console.log('Delete item', products[index])
-    }
 
     const refRows = (index, ref) => {
         row[index] = ref
@@ -85,10 +37,10 @@ const ProductList = () => {
             <AppBackground>
                 <View style={{margin : theme.spacing.s}}>
                     <HeaderPageLabel text='Product' />
-                    <FlatList data={products} 
+                    <FlatList data={viewState.data} 
                         onRefresh={onRefresh}
                         onEndReached={onFetchMore}
-                        refreshing={isFetching}
+                        refreshing={viewState.isLoading}
                         renderItem={renderItem}
                         keyExtractor={item => item.id}
                     />

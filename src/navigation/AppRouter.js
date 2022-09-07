@@ -15,15 +15,15 @@ import { View } from "react-native";
 
 const Stack = CreateStackNavigator();
 
-const AppRouter = () => {
+const AppRouter = ({initRoute = null}) => {
     const theme = useTheme();
     const {isTokenExist} = useAuth();
-    const [initialRoute, setInitialRoute] = useState(null);
+    const [initialRoute, setInitialRoute] = useState(initRoute);
     useEffect(() => {
         const onValidToken = async () => {
             try {
                 const resp = await isTokenExist();
-                console.log(resp);
+                // console.log(resp);
                 if (resp) {
                     setInitialRoute(ROUTE.MAIN);
                 } else {

@@ -3,7 +3,7 @@ import {StyleSheet, Text, View} from "react-native";
 import { useTheme } from '../context/ThemeContext';
 import Avater from './Avatar';
 
-const HeaderPageLabel = ({text='', showBorder = false, avatarImg = ''}) => {
+const HeaderPageLabel = ({text='', hint='', showBorder = false, avatarImg = ''}) => {
     const theme = useTheme();
     const styles = styling(theme);
     let borderStyle = {}
@@ -14,7 +14,7 @@ const HeaderPageLabel = ({text='', showBorder = false, avatarImg = ''}) => {
         }
     }
     return (
-        <View style={[styles.label, borderStyle]}>
+        <View style={[styles.label, borderStyle]} accessibilityHint={hint}>
             <Text style={[theme.text.titleProd, {fontWeight: 'bold'}]}>{text}</Text>
             {avatarImg && <Avater imageUrl={avatarImg}/>}
         </View>

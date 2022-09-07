@@ -21,7 +21,7 @@ const HomeRouter = () => {
                         return null
                 }
             },
-            tabBarActiveTintColor: theme.colors.black
+            tabBarActiveTintColor: theme.colors.orange
         })}>
             <Tab.Screen name={ROUTE.HOMEPAGE} component={MainPage} options={{headerShown: false}} />
             <Tab.Screen name={ROUTE.PRODUCT} component={ProductList} options={{headerShown: false}} />
