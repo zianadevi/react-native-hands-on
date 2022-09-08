@@ -1,6 +1,6 @@
-import {render, screen} from "@testing-library/react-native";
+import {fireEvent, render, screen} from "@testing-library/react-native";
 import { useState } from "react";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 import ModalDialog from "../../features/shared/components/ModalDialog";
 
 jest.useFakeTimers();
@@ -9,19 +9,24 @@ describe('Modal Dialog', () => {
         render(<ModalDialog visible><Text>Dummy Modal</Text></ModalDialog>)
         expect(screen.getByText(/Dummy/)).toBeTruthy();
     });
-    test('Successfully auto close', () => {
+    test('Successfully close when user click on any screen', () => {
         const ModalTestHelper = () => {
-            const {modalVisible, setModalVisible} = useState(true);
-            return (
-                <View>
-                    <ModalDialog visible={modalVisible} onPress={() => setModalVisible(false)}>
-                        <Text>Dummy Modal</Text>
-                    </ModalDialog>
-                </View>
+            const [modalVisible, setModalVisible] = useState(true);
+            return(
+                <ModalDialog visible={modalVisible} onPress={() => setModalVisible(false)}>
+                    <Text>Dummy Modal</Text>
+                </ModalDialog>
             )
         }
         render(<ModalTestHelper/>);
-        const viewPressable = screen.getAllByA11yHint(/modal/);
-        expect(viewPressable).toBeTruthy();
+        const viewPressable = screen.getByA11yHint(/modal/)
+        fireEvent.press(viewPressable);
+        expect(screen.queryByText(/Dummy/)).toBeNull()
+    })
+    test('Successfully auto close', () => {
+        const mockOnClose = jest.fn()
+        render(<ModalDialog visible isAutoClose onPress={mockOnClose}><Text>Dummy Modal</Text></ModalDialog>);
+        jest.runAllTimers();
+        expect(mockOnClose).toHaveBeenCalledTimes(1);
     });
 })
